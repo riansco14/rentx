@@ -6,6 +6,7 @@ import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 import theme from './src/global/styles/theme';
 import { StatusBar } from 'react-native';
+import { DetalhesCarro } from './src/screens/DetalhesCarro';
 
 
 export default function App() {
@@ -22,7 +23,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      <Home />
+      <DetalhesCarro />
     </ThemeProvider>
   );
 }
