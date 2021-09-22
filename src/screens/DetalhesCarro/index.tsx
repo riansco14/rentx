@@ -22,9 +22,11 @@ import {
     Alugar,
     AlugarPeriodo,
     AlugarPreco,
-    Sobre
+    Sobre,
+    Footer
 } from './styles'
 import { Acessorios } from '../../components/Acessorio/styles'
+import { Button } from '../../components/Button'
 
 export function DetalhesCarro() {
     return (
@@ -73,6 +75,10 @@ export function DetalhesCarro() {
 
                 </Sobre>
             </ScrollView>
+
+            <Footer>
+                <Button title="Titulo" onPress={()=>console.log("LOG")} />
+            </Footer>
         </Container>
     )
 }

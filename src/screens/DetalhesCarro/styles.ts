@@ -59,3 +59,11 @@ export const Sobre = styled.Text`
 
     margin-top: 24px;
 `
+
+export const Footer = styled.View`
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.background_primary};
+    
+    padding: 24px 24px 24px;
+
+`
