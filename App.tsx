@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components/native';
 import theme from './src/global/styles/theme';
 import { StatusBar } from 'react-native';
 import { DetalhesCarro } from './src/screens/DetalhesCarro';
+import { Agendamentos } from './src/screens/Agendamentos';
 
 
 export default function App() {
@@ -22,7 +23,7 @@ export default function App() {
         barStyle="light-content"
         backgroundColor="transparent"
       />
-      <DetalhesCarro />
+      <Agendamentos />
     </ThemeProvider>
   );
 }
