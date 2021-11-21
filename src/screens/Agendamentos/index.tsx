@@ -1,7 +1,7 @@
 import React from 'react'
-import { BackButton } from '../../components/BackButton'
-import theme from '../../global/styles/theme'
 
+import theme from '../../global/styles/theme'
+import { BackButton } from '../../components/BackButton'
 import {
     Container, Header,
     Title,
@@ -13,8 +13,11 @@ import {
     Footer
 } from './styles'
 
+
+
 import ArrowSvg from '../../assets/arrow.svg'
 import { Button } from '../../components/Button'
+import { Calendar } from '../../components/Calendar'
 
 export function Agendamentos() {
     return (
@@ -53,7 +56,7 @@ export function Agendamentos() {
             </Header>
 
             <Content>
-
+                <Calendar />
             </Content>
 
             <Footer>
