@@ -15,7 +15,9 @@ export default {
         sucess: '#03b252',
 
         shape: '#e1e1e8',
-        shape_dark: '#29292e'
+        shape_dark: '#29292e',
+
+        white: '#fff'
 
     },
     fonts: {
