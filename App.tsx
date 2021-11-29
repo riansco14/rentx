@@ -1,14 +1,11 @@
 import React from 'react';
 import { useFonts, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Archivo_400Regular, Archivo_500Medium, Archivo_600SemiBold } from '@expo-google-fonts/archivo';
-import { Home } from './src/screens/Home';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 import theme from './src/global/styles/theme';
 import { StatusBar } from 'react-native';
-import { DetalhesCarro } from './src/screens/DetalhesCarro';
-import { Agendamentos } from './src/screens/Agendamentos';
-import { AgendamentosDetalhes } from './src/screens/AgendamentosDetalhes';
+import { Routes } from './src/routes';
 
 
 export default function App() {
@@ -22,9 +19,10 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <StatusBar
         barStyle="light-content"
-        backgroundColor="transparent"
+        translucent
+        backgroundColor="transparent" 
       />
-      <AgendamentosDetalhes />
+      <Routes />
     </ThemeProvider>
   );
 }
