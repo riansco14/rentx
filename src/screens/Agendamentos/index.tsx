@@ -18,8 +18,15 @@ import {
 import ArrowSvg from '../../assets/arrow.svg'
 import { Button } from '../../components/Button'
 import { Calendar } from '../../components/Calendar'
+import { useNavigation } from '@react-navigation/native'
 
 export function Agendamentos() {
+    const navigation = useNavigation()
+
+    function handleConfirmarAluguel() {
+        navigation.navigate("AgendamentosDetalhes")
+    }
+
     return (
         <Container>
             <Header>
@@ -60,7 +67,7 @@ export function Agendamentos() {
             </Content>
 
             <Footer>
-                <Button title="Titulo" />
+                <Button title="Confirmar" onPress={handleConfirmarAluguel} />
             </Footer>
 
 

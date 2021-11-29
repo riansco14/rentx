@@ -33,9 +33,16 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 
 import {Feather} from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/core'
 
 export function AgendamentosDetalhes() {
     const theme = useTheme()
+    const navigation = useNavigation()
+
+    function handleConfirmarAluguel() {
+        navigation.navigate("AgendamentosConcluido")
+    }
+
     return (
         <Container>
             <Header>
@@ -123,7 +130,10 @@ export function AgendamentosDetalhes() {
             </ScrollView>
 
             <Footer>
-                <Button title="Titulo" onPress={()=>console.log("LOG")} />
+                <Button
+                    title="Alugar agora"
+                    color={theme.colors.sucess}
+                    onPress={handleConfirmarAluguel} />
             </Footer>
         </Container>
     )

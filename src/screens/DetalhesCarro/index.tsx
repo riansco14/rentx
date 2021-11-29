@@ -27,8 +27,16 @@ import {
 } from './styles'
 import { Acessorios } from '../../components/Acessorio/styles'
 import { Button } from '../../components/Button'
+import { useNavigation } from '@react-navigation/native'
+import { useTheme } from 'styled-components'
 
 export function DetalhesCarro() {
+    const navigation = useNavigation()
+
+    function handleConfirmarAluguel() {
+        navigation.navigate("Agendamentos")
+    }
+
     return (
         <Container>
             <Header>
@@ -77,7 +85,9 @@ export function DetalhesCarro() {
             </ScrollView>
 
             <Footer>
-                <Button title="Titulo" onPress={()=>console.log("LOG")} />
+                <Button
+                    title="Escolher período de aluguel"
+                    onPress={handleConfirmarAluguel} />
             </Footer>
         </Container>
     )

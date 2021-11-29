@@ -13,6 +13,7 @@ import {
 } from './styles'
 
 import GasolinaSvg from '../../assets/gasoline.svg'
+import { RectButtonProps } from 'react-native-gesture-handler'
 
 
 interface CarroData{
@@ -25,12 +26,12 @@ interface CarroData{
     thumbnail: string
 }
 
-interface Props{
+interface Props extends RectButtonProps{
     data: CarroData
 }
 
 
-export function Carro({ data }: Props) {
+export function Carro({ data, ...rest}: Props) {
     const carData = {
         marca: "audi",
         nome: "Coupé",
@@ -44,7 +45,7 @@ export function Carro({ data }: Props) {
     data = carData
 
     return (
-        <Container>
+        <Container {...rest}>
             <DetalhesCarro>
                 <Marca>{data.marca}</Marca>
                 <Nome>{data.nome}</Nome>

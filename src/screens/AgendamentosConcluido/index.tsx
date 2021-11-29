@@ -6,13 +6,18 @@ import DoneSvg from '../../assets/done.svg'
 import {Container, Content, Titulo, Mensagem, Footer} from './styles'
 import { useWindowDimensions } from 'react-native'
 import { ConfirmarButton } from '../../components/ConfirmarButton'
+import { useNavigation } from '@react-navigation/core'
 
 
 
 export function AgendamentosConcluido() {
-
+    const navigation = useNavigation()
     const { width } = useWindowDimensions()
     
+    function handleConfirmar() {
+        navigation.navigate("Home")
+    }
+
     return (
         <Container>
             <LogoSvg width={width} />
@@ -28,7 +33,7 @@ export function AgendamentosConcluido() {
             </Content>
 
             <Footer>
-                <ConfirmarButton titulo="Ok" />
+                <ConfirmarButton titulo="Ok" onPress={handleConfirmar} />
             </Footer>
         </Container>
     )
