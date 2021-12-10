@@ -14,54 +14,37 @@ import {
 
 import GasolinaSvg from '../../assets/gasoline.svg'
 import { RectButtonProps } from 'react-native-gesture-handler'
+import { CarroDTO } from '../../dtos/CarroDTO';
+import { getAcessorioIcon } from '../../utils/getAcessorioIcon';
 
 
-interface CarroData{
-    marca: string
-    nome: string
-    alugar: {
-        periodo: string
-        preco: number
-    }
-    thumbnail: string
-}
-
-interface Props extends RectButtonProps{
-    data: CarroData
+interface Props extends RectButtonProps {
+    data: CarroDTO
 }
 
 
-export function Carro({ data, ...rest}: Props) {
-    const carData = {
-        marca: "audi",
-        nome: "Coupé",
-        alugar: {
-            periodo: "ao dia",
-            preco: 120
-        },
-        thumbnail: "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png"
-    } as CarroData
-
-    data = carData
-
+export function Carro({ data, ...rest }: Props) {
+    const MotorIcon = getAcessorioIcon(data.fuel_type)
+    const carData = data
+    
     return (
         <Container {...rest}>
             <DetalhesCarro>
-                <Marca>{data.marca}</Marca>
-                <Nome>{data.nome}</Nome>
+                <Marca>{carData.brand}</Marca>
+                <Nome>{carData.name}</Nome>
 
                 <SobreContainer>
                     <Alugar>
-                        <AlugarPeriodo>{data.alugar.periodo }</AlugarPeriodo>
-                        <AlugarPreco>{`R$ ${data.alugar.preco}` }</AlugarPreco>
+                        <AlugarPeriodo>{carData.rent.period}</AlugarPeriodo>
+                        <AlugarPreco>{`R$ ${carData.rent.price}`}</AlugarPreco>
                     </Alugar>
                     <Tipo>
-                        <GasolinaSvg />
+                        <MotorIcon />
                     </Tipo>
                 </SobreContainer>
             </DetalhesCarro>
             <ImageCarro resizeMode="cover" source={{
-                uri: data.thumbnail
+                uri: carData.thumbnail
             }} />
         </Container>
     )
