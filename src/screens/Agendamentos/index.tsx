@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import theme from '../../global/styles/theme'
 import { BackButton } from '../../components/BackButton'
 import {
     Container, Header,
@@ -17,15 +16,36 @@ import {
 
 import ArrowSvg from '../../assets/arrow.svg'
 import { Button } from '../../components/Button'
-import { Calendar } from '../../components/Calendar'
+import { Calendar, DayProps, MarkedDatesProps } from '../../components/Calendar'
 import { useNavigation } from '@react-navigation/native'
+import { useTheme } from 'styled-components/native'
+import { generateInterval } from '../../components/Calendar/generateInterval'
 
 export function Agendamentos() {
     const navigation = useNavigation()
+    const theme = useTheme()
+
+    const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps)
+    const [markedDates, setMarkedDates] = useState<MarkedDatesProps>({} as MarkedDatesProps)
 
     function handleConfirmarAluguel() {
         navigation.navigate("AgendamentosDetalhes")
+    } 
+    function handleChangeDate(day: DayProps) {
+        let start = !lastSelectedDate.timestamp ? day : lastSelectedDate
+        let end = day
+        if (start.timestamp > end.timestamp) {
+            let tmp = start
+            start = end
+            end = tmp
+        }
+        setLastSelectedDate(end)
+
+        const interval = generateInterval(start, end)
+        setMarkedDates(interval)
+            
     }
+
 
     return (
         <Container>
@@ -63,7 +83,10 @@ export function Agendamentos() {
             </Header>
 
             <Content>
-                <Calendar />
+                <Calendar
+                    markedDates={markedDates}
+                    onDayPress={handleChangeDate}
+                />
             </Content>
 
             <Footer>
