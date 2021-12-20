@@ -17,20 +17,44 @@ import {
 import ArrowSvg from '../../assets/arrow.svg'
 import { Button } from '../../components/Button'
 import { Calendar, DayProps, MarkedDatesProps } from '../../components/Calendar'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { useTheme } from 'styled-components/native'
 import { generateInterval } from '../../components/Calendar/generateInterval'
+import { getPlataformDate } from '../../utils/getPlataformDate'
+import { format } from 'date-fns'
+import { Alert } from 'react-native'
+import { CarroDTO } from '../../dtos/CarroDTO'
+
+interface PeriodoAluguel {
+    start: number
+    startFormatted: string
+    end: number
+    endFormatted: string
+}
+
+
+interface Params {
+    carro: CarroDTO
+}
 
 export function Agendamentos() {
     const navigation = useNavigation()
+    const route = useRoute()
+    const { carro } = route.params as Params
+
     const theme = useTheme()
 
     const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps)
     const [markedDates, setMarkedDates] = useState<MarkedDatesProps>({} as MarkedDatesProps)
+    const [periodoAluguel, setPeriodoAluguel] = useState<PeriodoAluguel>({} as PeriodoAluguel)
 
     function handleConfirmarAluguel() {
-        navigation.navigate("AgendamentosDetalhes")
-    } 
+        if (!periodoAluguel.startFormatted || !periodoAluguel.endFormatted) {
+            Alert.alert("Selecione o intervalo para alugar")
+        } else {
+            navigation.navigate("AgendamentosDetalhes", { carro, dates: Object.keys(markedDates)})
+        }
+    }
     function handleChangeDate(day: DayProps) {
         let start = !lastSelectedDate.timestamp ? day : lastSelectedDate
         let end = day
@@ -43,7 +67,16 @@ export function Agendamentos() {
 
         const interval = generateInterval(start, end)
         setMarkedDates(interval)
-            
+
+        const firstDate = Object.keys(interval)[0]
+        const lastDate = Object.keys(interval)[Object.keys(interval).length - 1]
+        setPeriodoAluguel({
+            start: start.timestamp,
+            startFormatted: format(getPlataformDate(new Date(firstDate)), 'dd/MM/yyyy'),
+            end: end.timestamp,
+            endFormatted: format(getPlataformDate(new Date(lastDate)), 'dd/MM/yyyy'),
+        })
+
     }
 
 
@@ -63,8 +96,8 @@ export function Agendamentos() {
                         <DateTitle>
                             DE
                         </DateTitle>
-                        <DateValue selected={false}>
-                            18/01/2021
+                        <DateValue selected={!!periodoAluguel.endFormatted}>
+                            {periodoAluguel.startFormatted}
                         </DateValue>
                     </DateInfo>
 
@@ -74,8 +107,8 @@ export function Agendamentos() {
                         <DateTitle>
                             DE
                         </DateTitle>
-                        <DateValue selected={false}>
-                            18/01/2021
+                        <DateValue selected={!!periodoAluguel.endFormatted}>
+                            {periodoAluguel.endFormatted}
                         </DateValue>
                     </DateInfo>
 
