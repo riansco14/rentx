@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
-import { Container, Header, HeaderContent, TotalCars } from './styles'
+import { Ionicons } from '@expo/vector-icons'
+import { Container, Header, HeaderContent, MeusCarrosFloatButton, TotalCars } from './styles'
 import Logo from '../../assets/logo.svg'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { Carro } from '../../components/Carro'
@@ -9,11 +9,12 @@ import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import { CarroDTO } from '../../dtos/CarroDTO'
 import { Load } from '../../components/Load'
+import { useTheme } from 'styled-components/native'
 
 
 export function Home() {
     const navigation = useNavigation()
-
+    const theme = useTheme()
     const [loading, setLoading] = useState(true)
     const [carros, setCarros] = useState<CarroDTO[]>([])
 
@@ -39,6 +40,10 @@ export function Home() {
         navigation.navigate("DetalhesCarro", { carro })
     }
 
+    function handleMeusCarros() {
+        
+    }
+
     return (
         <Container>
             <Header>
@@ -58,6 +63,10 @@ export function Home() {
                         contentContainerStyle={{ padding: 24 }}
 
                     />}
+            
+            <MeusCarrosFloatButton onPress={handleMeusCarros}>
+                <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
+            </MeusCarrosFloatButton>
         </Container>
     )
 }
