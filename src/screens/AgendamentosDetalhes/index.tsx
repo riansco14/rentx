@@ -1,5 +1,5 @@
-import React from 'react'
-import { ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Alert, ScrollView } from 'react-native'
 import { Acessorio } from '../../components/Acessorio'
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
@@ -14,7 +14,7 @@ import PessoasSvg from '../../assets/people.svg'
 import CambioSvg from '../../assets/exchange.svg'
 
 import {
-    CarroImages, Container, Header, 
+    CarroImages, Container, Header,
     Descricao,
     Detalhes,
     Marca,
@@ -25,22 +25,68 @@ import {
     Sobre,
     Footer,
     PeriodoAlguel, CalendarioIcon, DateInfo, DateTitulo, DateValor,
-    AluguelPreco, AluguelPrecoLabel, AluguelPrecoDetalhes, AluguelPrecoParcelas, AluguelPrecoTotal 
+    AluguelPreco, AluguelPrecoLabel, AluguelPrecoDetalhes, AluguelPrecoParcelas, AluguelPrecoTotal
 } from './styles'
 import { Acessorios } from '../../components/Acessorio/styles'
 import { Button } from '../../components/Button'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 
-import {Feather} from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/core'
+import { Feather } from '@expo/vector-icons'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { CarroDTO } from '../../dtos/CarroDTO'
+import { getAcessorioIcon } from '../../utils/getAcessorioIcon'
+import { format } from 'date-fns'
+import { getPlataformDate } from '../../utils/getPlataformDate'
+import api from '../../services/api'
+
+interface Params {
+    carro: CarroDTO
+    dates: string[]
+}
+
+interface PeriodoAlguel {
+    start: string
+    end: string
+}
 
 export function AgendamentosDetalhes() {
     const theme = useTheme()
     const navigation = useNavigation()
+    const route = useRoute()
+    const [periodoAluguel, setPeriodoAluguel] = useState<PeriodoAlguel>({} as PeriodoAlguel)
+    const { carro, dates } = route.params as Params
 
-    function handleConfirmarAluguel() {
-        navigation.navigate("AgendamentosConcluido")
+    const alguelTotal = Number(dates.length * carro.rent.price)
+
+    useEffect(() => {
+        setPeriodoAluguel({
+            start: format(getPlataformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+            end: format(getPlataformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
+        })
+    }, [])
+
+    async function handleConfirmarAluguel() {
+        try {
+            const agendamentosByCar = await api.get(`/schedules_bycars/${carro.id}`)
+
+            const datasIndisponiveis = [
+                ...agendamentosByCar.data.unavailable_dates,
+                ...dates,
+            ]
+
+            api.put(`/schedules_bycars/${carro.id}`, {
+                id: carro.id,
+                unavailable_dates: datasIndisponiveis
+            }).then(() => navigation.navigate("AgendamentosConcluido")
+            ).catch(() => Alert.alert("Não foi possível confirmar o agendamento."))
+        } catch (error) {
+
+        }
+
+
+
+
     }
 
     return (
@@ -50,7 +96,7 @@ export function AgendamentosDetalhes() {
             </Header>
             <CarroImages>
 
-                <ImageSlider imagesUrl={["https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png", "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png", "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png", "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png"]} />
+                <ImageSlider imagesUrl={carro.photos} />
             </CarroImages>
 
 
@@ -61,23 +107,23 @@ export function AgendamentosDetalhes() {
             >
                 <Detalhes>
                     <Descricao>
-                        <Marca>Lamborghini</Marca>
-                        <Nome>Huracan</Nome>
+                        <Marca>{carro.brand}</Marca>
+                        <Nome>{carro.name}</Nome>
                     </Descricao>
                     <Alugar>
-                        <AlugarPeriodo>Ao dia</AlugarPeriodo>
-                        <AlugarPreco>R$ 580</AlugarPreco>
+                        <AlugarPeriodo>{carro.rent.period}</AlugarPeriodo>
+                        <AlugarPreco>R$ {carro.rent.price}</AlugarPreco>
                     </Alugar>
                 </Detalhes>
-                
-                
+
+
                 <Acessorios>
-                    <Acessorio icon={VelocidadeSvg} titulo="380km/h" />
-                    <Acessorio icon={AceleracaoSvg} titulo="3.2s" />
-                    <Acessorio icon={TorqueSvg} titulo="800 HP" />
-                    <Acessorio icon={GasolinaSvg} titulo="Gasolina" />
-                    <Acessorio icon={CambioSvg} titulo="380km/h" />
-                    <Acessorio icon={PessoasSvg} titulo="2 Pessoas" />
+                    {carro.accessories.map((item) => {
+                        return <Acessorio
+                            key={item.name}
+                            icon={getAcessorioIcon(item.type)}
+                            titulo={item.name} />
+                    })}
                 </Acessorios>
 
                 <PeriodoAlguel>
@@ -95,7 +141,7 @@ export function AgendamentosDetalhes() {
                         </DateTitulo>
 
                         <DateValor>
-                            18/06/2021
+                            {periodoAluguel.start}
                         </DateValor>
                     </DateInfo>
 
@@ -105,28 +151,28 @@ export function AgendamentosDetalhes() {
                         </DateTitulo>
 
                         <DateValor>
-                            18/06/2021
+                            {periodoAluguel.end}
                         </DateValor>
                     </DateInfo>
                 </PeriodoAlguel>
 
-                <AluguelPreco> 
+                <AluguelPreco>
                     <AluguelPrecoLabel>
                         Total
                     </AluguelPrecoLabel>
 
                     <AluguelPrecoDetalhes>
                         <AluguelPrecoParcelas>
-                            R$ 580 x 3 diárias
+                            R$ {carro.rent.price} x {Number(dates.length)} diárias
                         </AluguelPrecoParcelas>
                         <AluguelPrecoTotal>
-                            R$ 2.900
+                            R$ {alguelTotal}
                         </AluguelPrecoTotal>
                     </AluguelPrecoDetalhes>
                 </AluguelPreco>
 
 
-                
+
             </ScrollView>
 
             <Footer>
