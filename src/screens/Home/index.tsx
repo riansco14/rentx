@@ -41,7 +41,7 @@ export function Home() {
     }
 
     function handleMeusCarros() {
-        
+        navigation.navigate("MeusCarros")
     }
 
     return (
