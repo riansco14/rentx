@@ -49,11 +49,7 @@ export function Agendamentos() {
     const [periodoAluguel, setPeriodoAluguel] = useState<PeriodoAluguel>({} as PeriodoAluguel)
 
     function handleConfirmarAluguel() {
-        if (!periodoAluguel.startFormatted || !periodoAluguel.endFormatted) {
-            Alert.alert("Selecione o intervalo para alugar")
-        } else {
-            navigation.navigate("AgendamentosDetalhes", { carro, dates: Object.keys(markedDates)})
-        }
+        navigation.navigate("AgendamentosDetalhes", { carro, dates: Object.keys(markedDates)})
     }
     function handleChangeDate(day: DayProps) {
         let start = !lastSelectedDate.timestamp ? day : lastSelectedDate
@@ -123,7 +119,7 @@ export function Agendamentos() {
             </Content>
 
             <Footer>
-                <Button title="Confirmar" onPress={handleConfirmarAluguel} />
+                <Button enabled={!!periodoAluguel.startFormatted} title="Confirmar" onPress={handleConfirmarAluguel} />
             </Footer>
 
 

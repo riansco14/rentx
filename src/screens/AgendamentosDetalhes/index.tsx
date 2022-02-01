@@ -57,6 +57,8 @@ export function AgendamentosDetalhes() {
     const [periodoAluguel, setPeriodoAluguel] = useState<PeriodoAlguel>({} as PeriodoAlguel)
     const { carro, dates } = route.params as Params
 
+    const [loading, setLoading] = useState(false);
+
     const alguelTotal = Number(dates.length * carro.rent.price)
 
     useEffect(() => {
@@ -67,6 +69,7 @@ export function AgendamentosDetalhes() {
     }, [])
 
     async function handleConfirmarAluguel() {
+        setLoading(true);
         try {
             const agendamentosByCar = await api.get(`/schedules_bycars/${carro.id}`)
 
@@ -74,7 +77,12 @@ export function AgendamentosDetalhes() {
                 ...agendamentosByCar.data.unavailable_dates,
                 ...dates,
             ]
+            await api.post(`/schedules_byuser/`, {
+                user_id: 1,
+                car: carro
+            })
 
+            
             api.put(`/schedules_bycars/${carro.id}`, {
                 id: carro.id,
                 unavailable_dates: datasIndisponiveis
@@ -179,7 +187,10 @@ export function AgendamentosDetalhes() {
                 <Button
                     title="Alugar agora"
                     color={theme.colors.sucess}
-                    onPress={handleConfirmarAluguel} />
+                    onPress={handleConfirmarAluguel}
+                    enabled={!loading}
+                    loading={loading}
+                />
             </Footer>
         </Container>
     )
