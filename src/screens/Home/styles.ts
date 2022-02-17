@@ -3,6 +3,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { FlatList, RectButton } from 'react-native-gesture-handler'
 export const Container = styled.View`
     flex:1;
+    height: 100%;
     background-color: ${({ theme }) => theme.colors.background_primary};
 `
 
@@ -25,6 +26,9 @@ export const TotalCars = styled.Text`
     font-family: ${({ theme }) => theme.fonts.primary_400};
     font-size: ${RFValue(15)}px;
     color: ${({ theme }) => theme.colors.text_detail};
+`
+export const Content = styled.View`
+    flex:1;
 `
 
 export const CarList = styled(FlatList).attrs({

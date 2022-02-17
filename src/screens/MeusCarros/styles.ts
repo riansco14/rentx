@@ -8,27 +8,26 @@ export const Container = styled.View`
 `
 
 export const Header = styled.View`
-    width: 100%;
-    height: 325px;
-    background-color: ${({ theme }) => theme.colors.header};
-    justify-content: center;
-    padding: 25px;
-`
+  width: 100%;
+  height: 325px;
+  background-color: ${({ theme }) => theme.colors.header};
+  justify-content: center;
+  padding: 24px;
+`;
 
 export const Title = styled.Text`
-    color: ${({ theme }) => theme.colors.shape};
-    font-family: ${({ theme }) => theme.fonts.secondary_600};
-    font-size: ${RFValue(30)}px;
-    margin-top: 24px;
-`
-
+  color: ${({ theme }) => theme.colors.shape};
+  font-family: ${({ theme }) => theme.fonts.secondary_600};
+  font-size: ${RFValue(30)}px;
+  margin-top: 24px;
+`;
 
 export const SubTitle = styled.Text`
-    color: ${({ theme }) => theme.colors.shape};
-    font-family: ${({ theme }) => theme.fonts.secondary_400};
-    font-size: ${RFValue(15)}px;
-    margin-top: 24px;
-`
+  color: ${({ theme }) => theme.colors.shape};
+  font-family: ${({ theme }) => theme.fonts.secondary_400};
+  font-size: ${RFValue(15)}px;
+  margin-top: 24px;
+`;
 
 export const Content = styled.View`
     flex: 1;

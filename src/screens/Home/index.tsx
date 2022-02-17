@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { Container, Header, HeaderContent, MeusCarrosFloatButton, TotalCars } from './styles'
+import { Container, Content, Header, HeaderContent, MeusCarrosFloatButton, TotalCars } from './styles'
 import Logo from '../../assets/logo.svg'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { Carro } from '../../components/Carro'
@@ -10,29 +10,33 @@ import api from '../../services/api'
 import { CarroDTO } from '../../dtos/CarroDTO'
 import { Load } from '../../components/Load'
 import { useTheme } from 'styled-components/native'
+import { LoadError } from './components/LoadError'
 
 
 export function Home() {
     const navigation = useNavigation()
     const theme = useTheme()
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
     const [carros, setCarros] = useState<CarroDTO[]>([])
 
 
+    async function fetchCars() {
+        try {
+            setError(false)
+            setLoading(true)
+            const response = await api.get("/cars")
+            setCarros(response.data)
+
+        } catch (error) {
+            console.log(error);
+            setError(true)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        async function fetchCars() {
-            try {
-                const response = await api.get("/cars")
-                setCarros(response.data)
-
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false)
-            }
-        }
-
         fetchCars()
     }, [])
 
@@ -49,12 +53,14 @@ export function Home() {
             <Header>
                 <HeaderContent>
                     <Logo width={RFValue(108)} height={RFValue(12)} />
-                    <TotalCars>Total de 12 carros</TotalCars>
+                    <TotalCars>Total de {carros.length} carros</TotalCars>
                 </HeaderContent>
             </Header>
-
-            {
-                loading ? <Load /> :
+            <Content>
+            { error && <LoadError onPress={fetchCars} />}
+                
+           { !error &&
+                (loading ? <Load /> :
                     <FlatList
                         data={carros}
                         keyExtractor={item => item.id}
@@ -62,8 +68,8 @@ export function Home() {
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ padding: 24 }}
 
-                    />}
-            
+                    />)}
+            </Content>
             <MeusCarrosFloatButton onPress={handleMeusCarros}>
                 <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
             </MeusCarrosFloatButton>
