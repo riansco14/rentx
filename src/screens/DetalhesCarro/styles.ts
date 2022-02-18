@@ -8,13 +8,12 @@ export const Container = styled.View`
 `
 
 export const Header = styled.View`
-    position: absolute;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-
-    margin-top: 18px;
-    margin-left: 24px;
+   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  margin-top: ${18}px;
+  margin-left: 24px;
 
 `
 export const CarroImages = styled.View`

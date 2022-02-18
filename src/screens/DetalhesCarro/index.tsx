@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, StatusBar, StyleSheet } from 'react-native'
 import { Acessorio } from '../../components/Acessorio'
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
@@ -19,18 +19,49 @@ import {
 import { Acessorios } from '../../components/Acessorio/styles'
 import { Button } from '../../components/Button'
 import { useNavigation } from '@react-navigation/native'
-import { useTheme } from 'styled-components'
+import Animated, { Extrapolate, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 import { useRoute } from '@react-navigation/native'
 import { CarroDTO } from '../../dtos/CarroDTO'
 import { getAcessorioIcon } from '../../utils/getAcessorioIcon'
+import { useTheme } from 'styled-components'
+import { debounce } from 'lodash'
 
 interface Params {
     carro: CarroDTO
 }
+
 export function DetalhesCarro() {
     const navigation = useNavigation()
+    const theme = useTheme()
     const route = useRoute()
     const { carro } = route.params as Params
+
+    const scrollY = useSharedValue(0)
+
+    const scrollHandler = useAnimatedScrollHandler(event => {
+        scrollY.value = event.contentOffset.y
+    })
+
+    const headerStyleAnimation = useAnimatedStyle(() => {
+        return {
+            height: interpolate(
+                scrollY.value,
+                [0, 200],
+                [200, 70],
+                Extrapolate.CLAMP)
+        }
+    })
+
+    const sliderCarsStyleAnimation = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(
+                scrollY.value,
+                [0, 150],
+                [1, 0],
+                Extrapolate.CLAMP)
+        }
+    })
+
 
     function handleConfirmarAluguel() {
         navigation.navigate("Agendamentos", { carro })
@@ -40,21 +71,38 @@ export function DetalhesCarro() {
         navigation.goBack()
     }
 
+    
+
     return (
         <Container>
-            <Header>
-                <BackButton onPress={handleGoBack} />
-            </Header>
-            <CarroImages>
+            <StatusBar
+                barStyle="dark-content"
+                translucent
+                backgroundColor="transparent"
+            />
+            <Animated.View style={[
+                headerStyleAnimation,
+                styles.header,
+                { backgroundColor: theme.colors.background_secondary }
+            ]}>
+                <Header>
+                    <BackButton onPress={debounce(handleGoBack,500)} />
+                </Header>
+                <CarroImages>
+                <Animated.View style={sliderCarsStyleAnimation}>
+                    <ImageSlider imagesUrl={carro.photos} />
+                    </Animated.View>
+                    </CarroImages>
+            </Animated.View>
 
-                <ImageSlider imagesUrl={["https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png", "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png", "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png", "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/vhs/Audi-S5.png"]} />
-            </CarroImages>
-
-
-
-            <ScrollView
-                contentContainerStyle={{ padding: 24, alignItems: 'center' }}
+            <Animated.ScrollView
+                contentContainerStyle={{
+                    paddingHorizontal: 24,
+                    paddingTop: 160
+                }}
                 showsVerticalScrollIndicator={false}
+                onScroll={scrollHandler}
+                scrollEventThrottle={32}
             >
                 <Detalhes>
                     <Descricao>
@@ -77,31 +125,32 @@ export function DetalhesCarro() {
                     })}
 
                 </Acessorios>
-                {
-                /*
-                 <Acessorio icon={VelocidadeSvg} titulo="380km/h" />
-                    <Acessorio icon={AceleracaoSvg} titulo="3.2s" />
-                    <Acessorio icon={TorqueSvg} titulo="800 HP" />
-                    <Acessorio icon={GasolinaSvg} titulo="Gasolina" />
-                    <Acessorio icon={CambioSvg} titulo="380km/h" />
-                    <Acessorio icon={PessoasSvg} titulo="2 Pessoas" />
-            */
-                }
-
-
-
-
-
                 <Sobre>
                     {carro.about}
+                    {carro.about}
+                    {carro.about}
+                    {carro.about}
+                    {carro.about}
+                    {carro.about}
+                    {carro.about}
+                    {carro.about}
+
                 </Sobre>
-            </ScrollView>
+            </Animated.ScrollView>
 
             <Footer>
                 <Button
                     title="Escolher período de aluguel"
-                    onPress={handleConfirmarAluguel} />
+                    onPress={debounce(handleConfirmarAluguel, 500)} />
             </Footer>
         </Container>
     )
 }
+
+const styles = StyleSheet.create({
+    header: {
+        position: 'absolute',
+        overflow: 'hidden',
+        zIndex: 1
+    }
+})
