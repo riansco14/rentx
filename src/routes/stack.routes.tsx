@@ -19,6 +19,7 @@ export function StackRoutes() {
             />
             <Screen
                 name="Home"
+                options={{gestureEnabled: false}}
                 component={Home}
             />
             <Screen
