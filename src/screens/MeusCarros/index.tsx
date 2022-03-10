@@ -6,13 +6,14 @@ import { useTheme } from 'styled-components'
 
 import { BackButton } from '../../components/BackButton'
 import { Carro } from '../../components/Carro'
+import { LoadAnimation } from '../../components/LoadAnimation'
 import { CarroDTO } from '../../dtos/CarroDTO'
 import api from '../../services/api'
 
 import { Container, Content, Header, SubTitle, Title, Agendamentos, AgendamentosTitulo, AgendamentosQuantidade } from './styles'
 
 
-interface CarroProps{
+interface CarroProps {
     id: string
     user_id: string
     car: CarroDTO
@@ -63,19 +64,19 @@ export function MeusCarros() {
                     Conforto, segurança e praticidade
                 </SubTitle>
             </Header>
-
-            <Content>
+            {loading ? (<LoadAnimation />) : (<Content>
                 <Agendamentos>
                     <AgendamentosTitulo>Agendamentos feitos: </AgendamentosTitulo>
                     <AgendamentosQuantidade>05</AgendamentosQuantidade>
                 </Agendamentos>
-                    <FlatList
-                        data={carros}
-                        keyExtractor={(item: CarroProps) => item.id}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({item}:{item: CarroProps})=><Carro data={item.car}></Carro>}
-                    />
-            </Content>
+                <FlatList
+                    data={carros}
+                    keyExtractor={(item: CarroProps) => String(item.id)}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item }: { item: CarroProps }) => <Carro data={item.car}></Carro>}
+                />
+            </Content>)}
+
         </Container>
     )
 }

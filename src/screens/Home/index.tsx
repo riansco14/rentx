@@ -8,11 +8,11 @@ import { RectButton, PanGestureHandler } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import { CarroDTO } from '../../dtos/CarroDTO'
-import { Load } from '../../components/Load'
 import { useTheme } from 'styled-components/native'
 import { LoadError } from './components/LoadError'
 import Animated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring } from 'react-native-reanimated'
 import { BackHandler, FlatList, StyleSheet } from 'react-native'
+import { LoadAnimation } from '../../components/LoadAnimation'
 
 const ButtonAnimated = Animated.createAnimatedComponent(RectButton)
 
@@ -94,7 +94,7 @@ export function Home() {
                 {error && <LoadError onPress={fetchCars} />}
 
                 {!error &&
-                    (loading ? <Load /> :
+                    (loading ? <LoadAnimation /> :
                         <FlatList
                             data={carros}
                             keyExtractor={item => item.id}
