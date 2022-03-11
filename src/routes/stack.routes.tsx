@@ -7,15 +7,21 @@ import { AgendamentosDetalhes } from '../screens/AgendamentosDetalhes'
 import { AgendamentosConcluido } from '../screens/AgendamentosConcluido'
 import { MeusCarros } from '../screens/MeusCarros'
 import { Splash } from '../screens/Splash'
+import { Login } from '../screens/Login'
 
 const { Navigator, Screen } = createStackNavigator()
 
 export function StackRoutes() {
     return (
-        <Navigator headerMode="none">
+        <Navigator headerMode="none" initialRouteName='Login'>
             <Screen
                 name="Splash"
                 component={Splash}
+            />
+            <Screen
+                name="Login"
+                options={{gestureEnabled: false}}
+                component={Login}
             />
             <Screen
                 name="Home"
