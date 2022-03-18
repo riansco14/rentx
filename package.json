@@ -9,8 +9,6 @@
     "api": "json-server src/services/server.json --host 192.168.100.4 --port 3333 --delay 700"
   },
   "dependencies": {
-    "@expo-google-fonts/archivo": "^0.2.0",
-    "@expo-google-fonts/inter": "^0.2.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "5.x",
     "@react-navigation/stack": "5.x",
