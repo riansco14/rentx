@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { useTheme } from 'styled-components'
 import { Button } from '../../components/Button'
@@ -9,9 +9,13 @@ import { Container, Header, Title, SubTitle, Form, Footer } from './styles'
 
 export function Login() {
     const theme = useTheme()
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     return (
-        <KeyboardAvoidingView>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView behavior='position' enabled>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
                 <Container>
                     <StatusBar
                         barStyle="dark-content"
@@ -31,11 +35,15 @@ export function Login() {
                             keyboardType='email-address'
                             autoCorrect={false}
                             autoCapitalize='none'
+                            value={email}
+                            onChangeText={setEmail}
                         />
                         <InputPassword
                             iconName='lock'
                             placeholder='Senha'
                             autoCorrect={false}
+                            value={password}
+                            onChangeText={setPassword}
                         />
                     </Form>
 
