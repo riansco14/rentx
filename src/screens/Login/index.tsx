@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native'
 import { useTheme } from 'styled-components'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
+import { InputPassword } from '../../components/InputPassword'
 
 import { Container, Header, Title, SubTitle, Form, Footer } from './styles'
 
@@ -22,8 +23,17 @@ export function Login() {
             </Header>
 
             <Form>
-            <Input/>
-            <Input/>
+                <Input
+                    iconName='mail'
+                    placeholder='E-mail'
+                    keyboardType='email-address'
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                />
+                <InputPassword
+                    iconName='lock'
+                    placeholder='Senha'
+                />
             </Form>
 
             <Footer>
