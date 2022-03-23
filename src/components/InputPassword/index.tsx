@@ -35,8 +35,10 @@ export function InputPassword({
     }
 
     return (
-        <Container isFocused={isFocused}>
-            <IconContainer>
+        <Container>
+            <IconContainer
+                 isFocused={isFocused}
+            >
                 <Feather
                     name={iconName}
                     color={(isFocused || isFilled) ? theme.colors.main : theme.colors.text_detail}
@@ -50,6 +52,7 @@ export function InputPassword({
                 secureTextEntry={isPasswordVisible}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
+                isFocused={isFocused}
             />
 
             <PasswordVisibilityButton onPress={handlePasswordVisibility}>

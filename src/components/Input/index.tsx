@@ -31,8 +31,10 @@ export function Input({
     }
 
     return (
-        <Container isFocused={isFocused}>
-            <IconContainer>
+        <Container>
+            <IconContainer
+                isFocused={isFocused}
+            >
                 <Feather
                     name={iconName}
                     color={(isFocused || isFilled) ? theme.colors.main : theme.colors.text_detail}
@@ -45,6 +47,7 @@ export function Input({
                 value={value}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
+                isFocused={isFocused}
             />
         </Container>
     )
