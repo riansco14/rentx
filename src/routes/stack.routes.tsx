@@ -8,6 +8,8 @@ import { AgendamentosConcluido } from '../screens/AgendamentosConcluido'
 import { MeusCarros } from '../screens/MeusCarros'
 import { Splash } from '../screens/Splash'
 import { Login } from '../screens/Login'
+import { CriarContaPrimeiroPasso } from '../screens/CriarConta/CriarContaPrimeiroPasso'
+import { CriarContaSegundoPasso } from '../screens/CriarConta/CriarContaSegundoPasso'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -22,6 +24,16 @@ export function StackRoutes() {
                 name="Login"
                 options={{gestureEnabled: false}}
                 component={Login}
+            />
+            <Screen
+                name="CriarContaPrimeiroPasso"
+                options={{gestureEnabled: false}}
+                component={CriarContaPrimeiroPasso}
+            />
+            <Screen
+                name="CriarContaSegundoPasso"
+                options={{gestureEnabled: false}}
+                component={CriarContaSegundoPasso}
             />
             <Screen
                 name="Home"
