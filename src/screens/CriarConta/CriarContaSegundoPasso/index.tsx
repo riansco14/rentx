@@ -6,14 +6,16 @@ import { useTheme } from 'styled-components/native'
 import { BackButton } from '../../../components/BackButton'
 import { Bullet } from '../../../components/Bullet'
 import { Button } from '../../../components/Button'
+import { Nome } from '../../../components/Carro/styles'
 import { Input } from '../../../components/Input'
 import { InputPassword } from '../../../components/InputPassword'
+import api from '../../../services/api'
 
 import { Container, Header, Steps, Title, SubTitle, Form, FormTitle } from './styles'
 
 interface Params {
     user: {
-        name: string
+        nome: string
         email: string
         numeroCNH: string
     }
@@ -33,7 +35,7 @@ export function CriarContaSegundoPasso() {
         navigation.goBack()
     }
 
-    function handleRegister() {
+    async function handleRegister() {
         if (!password || !passwordConfirm) {
             return Alert.alert('Informe a senha e a senha de confirmação')
         }
@@ -42,12 +44,24 @@ export function CriarContaSegundoPasso() {
             return Alert.alert('As senhas não são iguais')
         }
 
-        //ENviar para API
-        navigation.navigate('Confirmacao', {
-            titulo: 'Conta criada!',
-            mensagem: `Agora é só fazer\nlogin e aproveitar.`,
-            nextScreenRoute: 'Login'
+        await api.post('/users', {
+            name: user.nome,
+            email: user.email,
+            driver_license: user.numeroCNH,
+            password,
+        }).then(() => {
+            navigation.navigate('Confirmacao', {
+                titulo: 'Conta criada!',
+                mensagem: `Agora é só fazer\nlogin e aproveitar.`,
+                nextScreenRoute: 'Login'
+            })
+        }).catch((error) =>
+        {
+            console.log(error)
+            Alert.alert('Opa', 'Não foi possível cadastrar')
         })
+
+
 
     }
 
