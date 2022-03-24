@@ -1,7 +1,8 @@
+import React, { useState } from 'react'
+import { Alert, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
-import { Keyboard, KeyboardAvoidingView } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import * as Yup from 'yup'
 import { BackButton } from '../../../components/BackButton'
 import { Bullet } from '../../../components/Bullet'
 import { Button } from '../../../components/Button'
@@ -12,8 +13,34 @@ import { Container, Header, Steps, Title, SubTitle, Form, FormTitle } from './st
 export function CriarContaPrimeiroPasso() {
     const navigation = useNavigation()
 
+    const [nome, setNome] = useState('')
+    const [email, setEmail] = useState('')
+    const [numeroCNH, setNumeroCNH] = useState('')
+
     function handleBack() {
         navigation.goBack()
+    }
+
+    async function handleProximoPasso() {
+        try {
+            const schema = Yup.object().shape({
+                nome: Yup.string()
+                    .required('O nome é obrigatório'),
+                email: Yup.string()
+                    .email('Insira um e-mail válido')
+                    .required('O e-mail é obrigatório'),
+                numeroCNH: Yup.string()
+                    .required('O número da CNH é obrigatório'),
+            })
+            const data = {nome, email, numeroCNH}
+            await schema.validate(data)
+
+            navigation.navigate('CriarContaSegundoPasso', { user: data})
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                return Alert.alert('Opa', error.message)
+            }
+        }
     }
 
     return (<KeyboardAvoidingView behavior='position' enabled>
@@ -42,24 +69,31 @@ export function CriarContaPrimeiroPasso() {
                     <Input
                         iconName='user'
                         placeholder='Nome'
+                        value={nome}
+                        onChangeText={setNome}
                     />
 
                     <Input
                         iconName='mail'
                         placeholder='E-mail'
                         keyboardType='email-address'
+                        value={email}
+                        onChangeText={setEmail}
                     />
 
                     <Input
                         iconName='credit-card'
                         placeholder='CNH'
                         keyboardType='numeric'
+                        value={numeroCNH}
+                        onChangeText={setNumeroCNH}
                     />
 
                 </Form>
 
                 <Button
                     title='Próximo'
+                    onPress={handleProximoPasso}
                 />
 
             </Container>
