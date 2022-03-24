@@ -4,7 +4,7 @@ import { Home } from '../screens/Home'
 import { DetalhesCarro } from '../screens/DetalhesCarro'
 import { Agendamentos } from '../screens/Agendamentos'
 import { AgendamentosDetalhes } from '../screens/AgendamentosDetalhes'
-import { AgendamentosConcluido } from '../screens/AgendamentosConcluido'
+import { Confirmacao } from '../screens/Confirmacao'
 import { MeusCarros } from '../screens/MeusCarros'
 import { Splash } from '../screens/Splash'
 import { Login } from '../screens/Login'
@@ -57,8 +57,8 @@ export function StackRoutes() {
                 component={AgendamentosDetalhes}
             />
             <Screen
-                name="AgendamentosConcluido"
-                component={AgendamentosConcluido}
+                name="Confirmacao"
+                component={Confirmacao}
             />
             
         </Navigator>

@@ -3,32 +3,37 @@ import React from 'react'
 import LogoSvg from '../../assets/logo_background_gray.svg'
 import DoneSvg from '../../assets/done.svg'
 
-import {Container, Content, Titulo, Mensagem, Footer} from './styles'
+import { Container, Content, Titulo, Mensagem, Footer } from './styles'
 import { useWindowDimensions } from 'react-native'
 import { ConfirmarButton } from '../../components/ConfirmarButton'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
+interface Props {
+    titulo: string
+    mensagem: string
+    nextScreenRoute: string
+}
 
-
-export function AgendamentosConcluido() {
+export function Confirmacao() {
     const navigation = useNavigation()
+    const route = useRoute()
+    const { titulo, mensagem, nextScreenRoute } = route.params as Props
+
     const { width } = useWindowDimensions()
-    
+
     function handleConfirmar() {
-        navigation.navigate("Home")
+        navigation.navigate(nextScreenRoute)
     }
 
     return (
         <Container>
             <LogoSvg width={width} />
 
-            <Content> 
+            <Content>
                 <DoneSvg width={80} />
-                <Titulo>Carro alugado!</Titulo>
+                <Titulo>{titulo}!</Titulo>
                 <Mensagem>
-                    Agora você só precisa ir {'\n'}
-                    até a concessionária da RENTX  {'\n'}
-                    pegar o seu automovel.
+                    {mensagem}
                 </Mensagem>
             </Content>
 
