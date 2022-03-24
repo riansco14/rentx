@@ -35,14 +35,19 @@ export function CriarContaSegundoPasso() {
 
     function handleRegister() {
         if (!password || !passwordConfirm) {
-            return Alert.alert('Informe a senha e a senha de confirmação')    
+            return Alert.alert('Informe a senha e a senha de confirmação')
         }
 
         if (password !== passwordConfirm) {
-            return Alert.alert('As senhas não são iguais')    
+            return Alert.alert('As senhas não são iguais')
         }
 
         //ENviar para API
+        navigation.navigate('Confirmacao', {
+            titulo: 'Conta criada!',
+            mensagem: `Agora é só fazer\nlogin e aproveitar.`,
+            nextScreenRoute: 'Login'
+        })
 
     }
 
