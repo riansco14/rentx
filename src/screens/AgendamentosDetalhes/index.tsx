@@ -88,9 +88,7 @@ export function AgendamentosDetalhes() {
                 unavailable_dates: datasIndisponiveis
             }).then(() => navigation.navigate("Confirmacao", {
                 titulo: 'Carro alugado!',
-                mensagem: `Agora você só precisa ir {'\n'}
-                até a concessionária da RENTX  {'\n'}
-                pegar o seu automovel.`,
+                mensagem: `Agora você só precisa ir\naté a concessionária da RENTX\npegar o seu automovel.`,
                 nextScreenRoute: 'Home'
             })
             ).catch(() => Alert.alert("Não foi possível confirmar o agendamento."))
