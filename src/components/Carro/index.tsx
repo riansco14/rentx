@@ -35,8 +35,8 @@ export function Carro({ data, ...rest }: Props) {
 
                 <SobreContainer>
                     <Alugar>
-                        <AlugarPeriodo>{carData.rent.period}</AlugarPeriodo>
-                        <AlugarPreco>{`R$ ${carData.rent.price}`}</AlugarPreco>
+                        <AlugarPeriodo>{carData.period}</AlugarPeriodo>
+                        <AlugarPreco>{`R$ ${carData.price}`}</AlugarPreco>
                     </Alugar>
                     <Tipo>
                         <MotorIcon />

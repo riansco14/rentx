@@ -98,7 +98,7 @@ export function DetalhesCarro() {
             <Animated.ScrollView
                 contentContainerStyle={{
                     paddingHorizontal: 24,
-                    paddingTop: 160
+                    paddingTop: 200
                 }}
                 showsVerticalScrollIndicator={false}
                 onScroll={scrollHandler}
@@ -110,8 +110,8 @@ export function DetalhesCarro() {
                         <Nome>{carro.name}</Nome>
                     </Descricao>
                     <Alugar>
-                        <AlugarPeriodo>{carro.rent.period}</AlugarPeriodo>
-                        <AlugarPreco>R$ {carro.rent.price}</AlugarPreco>
+                        <AlugarPeriodo>{carro.period}</AlugarPeriodo>
+                        <AlugarPreco>R$ {carro.price}</AlugarPreco>
                     </Alugar>
                 </Detalhes>
 
@@ -127,14 +127,6 @@ export function DetalhesCarro() {
                 </Acessorios>
                 <Sobre>
                     {carro.about}
-                    {carro.about}
-                    {carro.about}
-                    {carro.about}
-                    {carro.about}
-                    {carro.about}
-                    {carro.about}
-                    {carro.about}
-
                 </Sobre>
             </Animated.ScrollView>
 
