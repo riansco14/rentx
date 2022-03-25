@@ -7,10 +7,12 @@ import { InputPassword } from '../../components/InputPassword'
 import * as Yup from 'yup'
 import { Container, Header, Title, SubTitle, Form, Footer } from './styles'
 import { useNavigation } from '@react-navigation/native'
+import { useAuth } from '../../hooks/auth'
 
 export function Login() {
     const theme = useTheme()
     const navigation = useNavigation()
+    const { login } = useAuth()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -22,9 +24,9 @@ export function Login() {
                 password: Yup.string().required('A senha é obrigatória')
             });
 
-            await schema.validate({ email, password });
+            await schema.validate({ email, password })
 
-            Alert.alert('Tudo Certo!')
+            login({ email, password })
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 return Alert.alert('Opa', error.message)
@@ -76,7 +78,7 @@ export function Login() {
                     <Footer>
                         <Button
                             title='Login'
-                            onPress={() => { 
+                            onPress={() => {
                                 handleLogin(email, password)
                             }}
                             enabled={true}
@@ -88,7 +90,7 @@ export function Login() {
                             color={theme.colors.background_secondary}
                             onPress={() => {
                                 navigation.navigate('CriarContaPrimeiroPasso')
-                             }}
+                            }}
                             enabled={true}
                             loading={false}
                             light={true}
