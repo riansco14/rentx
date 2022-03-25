@@ -6,35 +6,12 @@ import { Agendamentos } from '../screens/Agendamentos'
 import { AgendamentosDetalhes } from '../screens/AgendamentosDetalhes'
 import { Confirmacao } from '../screens/Confirmacao'
 import { MeusCarros } from '../screens/MeusCarros'
-import { Splash } from '../screens/Splash'
-import { Login } from '../screens/Login'
-import { CriarContaPrimeiroPasso } from '../screens/CriarConta/CriarContaPrimeiroPasso'
-import { CriarContaSegundoPasso } from '../screens/CriarConta/CriarContaSegundoPasso'
 
 const { Navigator, Screen } = createStackNavigator()
 
-export function StackRoutes() {
+export function AppStackRoutes() {
     return (
-        <Navigator headerMode="none" initialRouteName='Login'>
-            <Screen
-                name="Splash"
-                component={Splash}
-            />
-            <Screen
-                name="Login"
-                options={{gestureEnabled: false}}
-                component={Login}
-            />
-            <Screen
-                name="CriarContaPrimeiroPasso"
-                options={{gestureEnabled: false}}
-                component={CriarContaPrimeiroPasso}
-            />
-            <Screen
-                name="CriarContaSegundoPasso"
-                options={{gestureEnabled: false}}
-                component={CriarContaSegundoPasso}
-            />
+        <Navigator headerMode="none" initialRouteName='Home'>
             <Screen
                 name="Home"
                 options={{gestureEnabled: false}}
