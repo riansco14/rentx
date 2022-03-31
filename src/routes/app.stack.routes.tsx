@@ -11,7 +11,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 const { Navigator, Screen } = createStackNavigator()
 
 export function AppStackRoutes({ navigation, route }) {
-    const tabHiddenRoutes = ["DetalhesCarro"];
+   const tabHiddenRoutes = ["DetalhesCarro"];
 
     useEffect(() => {
 
