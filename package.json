@@ -9,6 +9,7 @@
     "api": "json-server src/services/server.json --host 192.168.100.4 --port 3333 --delay 700"
   },
   "dependencies": {
+    "@nozbe/watermelondb": "^0.24.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "5.11.15",
     "@react-navigation/native": "5.9.8",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-decorators": "7.16.5",
     "@types/lodash": "^4.14.178",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",

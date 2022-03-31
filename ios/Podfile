@@ -18,4 +18,6 @@ target 'rentx' do
   #     flipper_post_install(installer)
   #   end
   # end
+  pod 'WatermelonDB', :path => '../node_modules/@nozbe/watermelondb'
+
 end
