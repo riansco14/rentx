@@ -19,23 +19,33 @@ export function Home() {
     const [error, setError] = useState(false)
     const [carros, setCarros] = useState<CarroDTO[]>([])
 
-    async function fetchCars() {
-        try {
-            setError(false)
-            setLoading(true)
-            const response = await api.get("/cars")
-            setCarros(response.data)
-
-        } catch (error) {
-            console.log(error);
-            setError(true)
-        } finally {
-            setLoading(false)
-        }
-    }
 
     useEffect(() => {
+        let isMounted = true;
+
+        async function fetchCars() {
+            try {
+                if (isMounted) {
+                    setError(false)
+                    setLoading(true)
+                }
+                const response = await api.get("/cars")
+                if (isMounted)
+                    setCarros(response.data)
+            } catch (error) {
+                if(isMounted)
+                    setError(true)
+            } finally {
+                if(isMounted)
+                    setLoading(false)
+            }
+        }
+
         fetchCars()
+
+        return () => {
+            isMounted = false
+        }
     }, [])
 
 
