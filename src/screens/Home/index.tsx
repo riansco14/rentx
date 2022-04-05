@@ -16,6 +16,7 @@ export function Home() {
     const navigation = useNavigation()
     const theme = useTheme()
     const [loading, setLoading] = useState(true)
+    const [reloading, setReloading] = useState(true)
     const [error, setError] = useState(false)
     const [carros, setCarros] = useState<CarroDTO[]>([])
 
@@ -33,10 +34,10 @@ export function Home() {
                 if (isMounted)
                     setCarros(response.data)
             } catch (error) {
-                if(isMounted)
+                if (isMounted)
                     setError(true)
             } finally {
-                if(isMounted)
+                if (isMounted)
                     setLoading(false)
             }
         }
@@ -46,7 +47,9 @@ export function Home() {
         return () => {
             isMounted = false
         }
-    }, [])
+    }, [reloading])
+
+
 
 
     function handleCarroDetalhes(carro: CarroDTO) {
@@ -66,7 +69,7 @@ export function Home() {
                 </HeaderContent>
             </Header>
             <Content>
-                {error && <LoadError onPress={fetchCars} />}
+                {error && <LoadError onPress={() => setReloading(prevState => !prevState)} />}
 
                 {!error &&
                     (loading ? <LoadAnimation /> :
