@@ -47,12 +47,13 @@ export function InputPassword({
                 />
             </IconContainer>
             <InputText
-                {...rest}
                 value={value}
                 secureTextEntry={isPasswordVisible}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
                 isFocused={isFocused}
+                autoCorrect={false}
+                {...rest}
             />
 
             <PasswordVisibilityButton onPress={handlePasswordVisibility}>

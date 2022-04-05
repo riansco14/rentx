@@ -1,4 +1,4 @@
-import { RectButton, TouchableOpacity } from 'react-native-gesture-handler'
+import { BorderlessButton, RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
 import styled, { css } from 'styled-components/native'
 
@@ -7,7 +7,6 @@ interface OptionProps {
 }
 
 export const Container = styled.View`
-    flex:1;
 `
 
 export const Header = styled.View`
@@ -22,6 +21,9 @@ export const HeaderTop = styled.View`
     flex-direction: row;
 
     align-items: center;
+
+    margin-right: 20px;
+    margin-left: 10px;
 `
 
 export const Title = styled.Text`
@@ -33,9 +35,12 @@ export const Title = styled.Text`
     text-align: center;
 `
 
+export const LogoutButton = styled(BorderlessButton)``
+
 export const Content = styled.View`
     width: 100%;
     height: 100%;
+    padding: 0 24px;
 
     align-items: center;
     background-color: ${({ theme }) => theme.colors.background_secondary};
@@ -68,7 +73,6 @@ export const IconContainer = styled(RectButton)`
 
 `
 export const OptionsContainer = styled.View`
-    flex: 1;
     padding: 0 24px;
     margin-top: 32px;
 `
@@ -99,4 +103,8 @@ export const OptionTitle = styled.Text<OptionProps>`
     font-size: ${RFValue(20)}px;
     color: ${({ theme, active }) => active ? theme.colors.title : theme.colors.text_detail};
 
+`
+
+export const Section = styled.View`
+    width: 100%;
 `
