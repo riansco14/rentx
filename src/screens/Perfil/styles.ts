@@ -50,13 +50,14 @@ export const AvatarContainer = styled.View`
     margin-top: -90px;
     height: 180px;
     width: 180px;
+
+    background-color: ${({ theme }) => theme.colors.shape};
+    border-radius: 90px;
 `
 export const AvatarImage = styled.Image`
     height: 180px;
     width: 180px;
     border-radius: 90px;
-
-    background-color: ${({ theme }) => theme.colors.shape};
 `
 
 export const IconContainer = styled(RectButton)`

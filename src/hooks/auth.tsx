@@ -30,7 +30,7 @@ interface LoginCredentials {
 interface AuthContextData {
     usuario: User
     login: (usuarioData: LoginCredentials) => Promise<void>
-    //logout: () => Promise<void>
+    logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -61,7 +61,6 @@ function AuthProvider({ children }: AuthProviderProps) {
         loadUsuarioData()
     }, [])
 
-    console.log(data)
     async function login({ email, password }: LoginCredentials) {
         try {
             const response = await api.post('/sessions', {
@@ -98,7 +97,23 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
-    return <AuthContext.Provider value={{ usuario: data, login }}>{children}</AuthContext.Provider>
+    async function logout() {
+        try {
+            const usersCollection = database.get<ModelUser>('users')
+
+            await database.write(
+                async () => {
+                    const userSelected = usersCollection.find(data.id)
+                    await (await userSelected).destroyPermanently()
+                    setData({} as User)
+                }
+            )
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    return <AuthContext.Provider value={{ usuario: data, login, logout }}>{children}</AuthContext.Provider>
 }
 
 function useAuth(): AuthContextData {
