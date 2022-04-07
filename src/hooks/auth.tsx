@@ -31,6 +31,7 @@ interface AuthContextData {
     usuario: User
     login: (usuarioData: LoginCredentials) => Promise<void>
     logout: () => Promise<void>
+    updateUser: (user: User) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -48,7 +49,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             const response = await userCollection.query().fetch()
             if (response.length > 0) {
                 const userData = response[0]._raw as unknown as User
-                
+
                 api.defaults.headers.authorization = `Bearer ${userData.token}`;
 
                 setData({
@@ -113,7 +114,24 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
-    return <AuthContext.Provider value={{ usuario: data, login, logout }}>{children}</AuthContext.Provider>
+    async function updateUser(user: User) {
+        try {
+            const userCollections = database.get<ModelUser>('users')
+            await database.write(async () => {
+                const userSelected = userCollections.find(data.id)
+                await (await userSelected).update((userData) => {
+                    userData.name = user.nome
+                    userData.driver_license = user.numeroCNH
+                    userData.avatar = user.avatar
+                })
+                setData(user)
+            })
+        } catch (error) {
+            throw new Error()
+        }
+    }
+
+    return <AuthContext.Provider value={{ usuario: data, login, logout, updateUser }}>{children}</AuthContext.Provider>
 }
 
 function useAuth(): AuthContextData {
