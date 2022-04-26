@@ -76,6 +76,24 @@ export function Perfil() {
         }
     }
 
+    function handleProfileLogout() {
+        Alert.alert('Tem certeza ? ',
+            'Lembre-se, que ao sair vai precisar de internet para conectar-se novamente ',
+            [{
+                text: 'Cancelar',
+                onPress: () => { },
+                style: 'cancel'
+            },
+                {
+                    text: 'Sair',
+                    onPress: () => logout()
+                }
+            
+            ]
+        
+        )
+    }
+
     return (
         <KeyboardAvoidingView behavior='position' enabled>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -84,7 +102,7 @@ export function Perfil() {
                         <HeaderTop>
                             <BackButton />
                             <Title>Editar Perfil</Title>
-                            <LogoutButton onPress={handleLogout}>
+                            <LogoutButton onPress={handleProfileLogout}>
                                 <Feather name="power" size={24} color={theme.colors.shape} />
                             </LogoutButton>
                         </HeaderTop>
