@@ -24,6 +24,15 @@ export function Home() {
     const [error, setError] = useState(false)
     const [carros, setCarros] = useState<ModelCar[]>([])
 
+    const netInfo = useNetInfo()
+
+    useEffect(() => {
+        if (netInfo.isConnected ===true) {
+            offlineSynchronize();
+        }
+    }, [netInfo.isConnected])
+    
+
     useEffect(() => {
         let isMounted = true;
 
