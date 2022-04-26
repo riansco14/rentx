@@ -8,8 +8,12 @@ import api from '../../services/api'
 import { CarroDTO } from '../../dtos/CarroDTO'
 import { useTheme } from 'styled-components/native'
 import { LoadError } from './components/LoadError'
-import { FlatList } from 'react-native'
+import { Button, FlatList } from 'react-native'
 import { LoadAnimation } from '../../components/LoadAnimation'
+import { useNetInfo } from '@react-native-community/netinfo'
+import { synchronize } from '@nozbe/watermelondb/sync'
+import { database } from '../../databases'
+import { Car as ModelCar } from '../../databases/model/Car'
 
 
 export function Home() {
@@ -18,8 +22,7 @@ export function Home() {
     const [loading, setLoading] = useState(true)
     const [reloading, setReloading] = useState(true)
     const [error, setError] = useState(false)
-    const [carros, setCarros] = useState<CarroDTO[]>([])
-
+    const [carros, setCarros] = useState<ModelCar[]>([])
 
     useEffect(() => {
         let isMounted = true;
@@ -30,9 +33,10 @@ export function Home() {
                     setError(false)
                     setLoading(true)
                 }
-                const response = await api.get("/cars")
+                const carCollection = database.get<ModelCar>('cars')
+                const cars = await carCollection.query().fetch()
                 if (isMounted)
-                    setCarros(response.data)
+                    setCarros(cars)
             } catch (error) {
                 if (isMounted)
                     setError(true)
@@ -50,9 +54,31 @@ export function Home() {
     }, [reloading])
 
 
+    async function offlineSynchronize() {
+        await synchronize({
+            database,
+            pullChanges: async ({lastPulledAt}) => {
+                const response = await api.get(`/cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
+                const { changes, latestVersion } = response.data
+                console.log("Sincronização ONLINE", latestVersion)
+                return {changes, timestamp: latestVersion}
+            },
+            pushChanges: async ({ changes }) => {
+                console.log("Sincronização DADOS OFFLINE", changes)
+                if (changes && changes.users) {
+                    const user = changes.users;
+                    console.log(JSON.stringify(user))
+                    await api.post(`/users/sync`, user).catch(console.log)
+                }
+
+            }
+        
+        });
+    }
 
 
-    function handleCarroDetalhes(carro: CarroDTO) {
+
+    function handleCarroDetalhes(carro: ModelCar) {
         navigation.navigate("DetalhesCarro", { carro })
     }
 
@@ -68,6 +94,7 @@ export function Home() {
                     <TotalCars>Total de {carros.length} carros</TotalCars>
                 </HeaderContent>
             </Header>
+            <Button title='Sincronizar' onPress={()=>offlineSynchronize()}></Button>
             <Content>
                 {error && <LoadError onPress={() => setReloading(prevState => !prevState)} />}
 
@@ -76,7 +103,7 @@ export function Home() {
                         <FlatList
                             data={carros}
                             keyExtractor={item => item.id}
-                            renderItem={({ item }: { item: CarroDTO }) => (<Carro data={item} onPress={() => handleCarroDetalhes(item)} />)}
+                            renderItem={({ item }: { item: ModelCar }) => (<Carro data={item} onPress={() => handleCarroDetalhes(item)} />)}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ padding: 24 }}
 
