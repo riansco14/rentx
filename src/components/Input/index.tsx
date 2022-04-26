@@ -43,11 +43,11 @@ export function Input({
                 ></Feather>
             </IconContainer>
             <InputText
-                {...rest}
                 value={value}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
                 isFocused={isFocused}
+                {...rest}
             />
         </Container>
     )

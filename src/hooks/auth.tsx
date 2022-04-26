@@ -14,8 +14,8 @@ interface User {
     id: string
     user_id: string
     email: string
-    nome: string
-    numeroCNH: string
+    name: string
+    driver_license: string
     avatar: string
     token: string
 }
@@ -115,14 +115,15 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
 
     async function updateUser(user: User) {
+        console.log("USER",user)
         try {
             const userCollections = database.get<ModelUser>('users')
             await database.write(async () => {
-                const userSelected = userCollections.find(data.id)
-                await (await userSelected).update((userData) => {
-                    userData.name = user.nome
-                    userData.driver_license = user.numeroCNH
-                    userData.avatar = user.avatar
+                const userSelected = await userCollections.find(data.id)
+                await userSelected.update((userData) => {
+                    userData.name = user.name
+                    userData.driver_license = user.driver_license
+                    userData.avatar = user.avatar || ""
                 })
                 setData(user)
             })

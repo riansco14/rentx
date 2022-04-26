@@ -21,8 +21,8 @@ export function Perfil() {
     const [option, setOption] = useState<'dados' | 'senha'>('dados')
 
     const [avatar, setAvatar] = useState(usuario.avatar)
-    const [nome, setNome] = useState(usuario.nome)
-    const [numeroCNH, setNumeroCNH] = useState(usuario.numeroCNH)
+    const [nome, setNome] = useState(usuario.name)
+    const [numeroCNH, setNumeroCNH] = useState(usuario.driver_license)
 
     function handleLogout() {
         logout()
@@ -45,6 +45,7 @@ export function Perfil() {
     }
 
     async function handleProfileUpdate() {
+        console.log(nome)
         try {
             const schema = Yup.object().shape({
                 driverLicense: Yup.string()
@@ -141,9 +142,9 @@ export function Perfil() {
                         </OptionsContainer>
                         {option === 'dados' ?
                             (<Section>
-                                <Input iconName='user' placeholder='Nome' autoCorrect={false} defaultValue={usuario.nome} />
+                                <Input iconName='user' placeholder='Nome' autoCorrect={false} defaultValue={usuario.nome} onChangeText={setNome} />
                                 <Input iconName='mail' editable={false} autoCorrect={false} defaultValue={usuario.email} />
-                                <Input iconName='credit-card' placeholder='CNH' keyboardType='numeric' defaultValue={usuario.numeroCNH} />
+                                <Input iconName='credit-card' placeholder='CNH' keyboardType='numeric' defaultValue={usuario.numeroCNH} onChangeText={setNumeroCNH} />
                             </Section>) :
                             (<Section>
                                 <InputPassword iconName='lock' placeholder='Senha Atual' />
